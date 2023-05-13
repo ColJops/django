@@ -8,10 +8,28 @@
 </head>
 <body>
     <h1>Moja Strona</h1>
+       <!--
         {% for n in news %}
             <h3>{{ n.title }}</h3>
             {{ n.text|safe }}<br />
             {{ n.date|date:"Y.m.d" }}
         {% endfor %}
+       --> 
+       {% for n in object_list %}
+            <h3><a href="/news/{{ n.slug }}/">{{ n.title }}</a></h3>
+            {{ n.text|safe }}<br />
+            <b>Dodane</b>: {{ n.date|date:"Y.m.d H:i" }},
+            <b>Kategorie</b>:
+                {% for i in n.category.all %}
+                    <a href="/{{ i.slug }}/">{{ i.name }}</a>
+                    {% if notforloop.last %}, {% endif %}
+                {% endfor %}
+        {% endfor %}
+        {% if has_previous %}
+            <div style="text-align:center;"><a href="/?page={{ previous }}"><b>Nowsze wiadomości</b></a></div>
+        {% endif %}
+        {% if has_next %}
+            <div style="text-align:center;"><a href="/?page={{ next }}"><b>Starsze wiadomości</b></a></div>
+        {% endif %}
 </body>
 </html>
